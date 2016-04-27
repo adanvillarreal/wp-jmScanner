@@ -197,6 +197,7 @@ def main():
 	scanid		= random.randint(1000000,9999999)
 	
 	for url in jm_scan:
+	  print "UYHJK" + url
 	  z 		= z + 1
 	  scandate  	= datetime.date.today()
 	  scantime	= datetime.datetime.now().time()
@@ -212,17 +213,25 @@ def main():
 	  
 	  
 	  print "\nPlease wait while checking '" + url + "'...!!"
-	  cmd = subprocess.Popen("cd " + config.config.jmscan_dir + 
-			  " && timeout " + str(config.config.jmscantimeout) +"s"+
-			  " perl joomscan.pl  -u " + url + " -nvf/-nfv",  shell=True, stdout=subprocess.PIPE)
-			  
+	  #cmd = subprocess.Popen("cd " + config.config.jmscan_dir + 
+		#	  " && timeout " + str(config.config.jmscantimeout) +"s"+
+		#	  " perl joomscan.pl  -u " + url + " -nvf/-nfv -ot",  shell=True, stdout=subprocess.PIPE)
+	  #cmd = subprocess.Popen("joomscan -u " + url + "-nvf/-nfv -ot", shell=True, stdout=subprocess.PIPE)
+	  args = "joomscan -u " + url + " -nvf/-nfv"
+	  cmd = subprocess.Popen(args, shell=True, stdout=subprocess.PIPE) #esto es lo 
+#que corre el comando de args (joomscan)
+	  print "CMDDDD" + config.config.jmscan_logs
+	  #f = open(config.config.jmscan_dir,'a')
 	  try:
-	    f = open(config.config.jmscan_logs,'a')
+	    f = open(config.config.jmscan_logs,'a') #No se que haga esto, supongo
+#que escribe lo que encuentra. Checa si jala antes el scan.
+	    print "###########################"
 	    f.write ("#-------------------------------------------------------------------------------------------#\n")
 	    f.write ("Target 		: " + url)
 	    f.write ("\nDate-Time 	: " + str(scandate)+ " - " + str(scantime))
 	    
 	    for line in iter(cmd.stdout.readline, ""):
+ 	      print line #agregado
 	      line = line.rstrip()
 	      
 	      if "[x]" in line:
